@@ -1,0 +1,11 @@
+{
+  "ok": false,
+  "location": "Botany",
+  "checkedAt": "2026-05-16T11:33:27.370Z",
+  "currentBookingDate": null,
+  "earliest": null,
+  "changed": false,
+  "firstRun": true,
+  "message": "Automated check failed: Service NSW/myRTA denied access from the GitHub Actions runner.",
+  "error": "myRTA returned Access Denied before the booking form loaded"
+}
