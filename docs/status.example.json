@@ -1,0 +1,12 @@
+{
+  "location": "Botany",
+  "checkedAt": "2030-01-01T00:00:00.000Z",
+  "currentBookingDate": "Monday, 1 January 2030",
+  "earliest": {
+    "date": "Monday, 1 January 2030",
+    "time": "9:00 am"
+  },
+  "changed": false,
+  "firstRun": true,
+  "message": "Example status payload. Replaced by the scheduled watcher."
+}

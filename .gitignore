@@ -1,0 +1,35 @@
+# local config
+.env
+.env.local
+.env.*.local
+
+# local state (do NOT commit personal booking state from local runs)
+state/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-lock.yaml
+
+# Playwright debug artifacts
+test-results/
+playwright-report/
+playwright/.cache/
+traces/
+screenshots/
+*.trace.zip
+*.webm
+*.png.tmp
+trace/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.claude/
+.vscode/
+.idea/
+*.swp

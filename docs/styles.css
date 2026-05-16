@@ -1,0 +1,143 @@
+:root {
+  color-scheme: light dark;
+  --bg: #f7f7f9;
+  --fg: #1a1a1f;
+  --muted: #5a5a66;
+  --card-bg: #ffffff;
+  --border: #e3e3ea;
+  --accent: #1a5bd6;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #15151b;
+    --fg: #f1f1f4;
+    --muted: #9b9ba8;
+    --card-bg: #1f1f27;
+    --border: #2c2c36;
+    --accent: #6ea8ff;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+}
+
+header h1 {
+  margin: 0 0 0.25rem;
+  font-size: 1.75rem;
+}
+
+.tagline {
+  color: var(--muted);
+  margin: 0 0 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem 1.25rem 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.card h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.15rem;
+}
+
+dl.status {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1rem;
+  margin: 0 0 0.5rem;
+}
+
+dl.status dt {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+dl.status dd {
+  margin: 0;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.status-message {
+  color: var(--muted);
+  margin: 0.5rem 0 0;
+  font-size: 0.95rem;
+}
+
+.subscribe-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.subscribe-list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.subscribe-list li:last-child {
+  border-bottom: none;
+}
+
+.subscribe-list a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.subscribe-list a:hover {
+  text-decoration: underline;
+}
+
+.subscribe-list .hint {
+  display: block;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+ul.disclaimer {
+  padding-left: 1.25rem;
+  margin: 0;
+}
+
+ul.disclaimer li {
+  margin-bottom: 0.3rem;
+}
+
+footer {
+  margin-top: 1.5rem;
+}
+
+.footnote {
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+a {
+  color: var(--accent);
+}

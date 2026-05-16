@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NSW Driving Test Slot Alerts</title>
+    <meta
+      name="description"
+      content="Unofficial public alerts for earliest NSW driving test slots at supported test centres."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <h1>NSW Driving Test Slot Alerts</h1>
+        <p class="tagline">
+          Unofficial public alerts for earliest available driving test slots.
+        </p>
+      </header>
+
+      <section class="card" aria-labelledby="status-heading">
+        <h2 id="status-heading">Latest known slot</h2>
+        <dl class="status" id="status">
+          <dt>Test centre</dt>
+          <dd id="status-location">Botany</dd>
+
+          <dt>Earliest slot</dt>
+          <dd id="status-earliest">Loading…</dd>
+
+          <dt>Last checked</dt>
+          <dd id="status-checked">Loading…</dd>
+        </dl>
+        <p id="status-message" class="status-message"></p>
+      </section>
+
+      <section class="card" aria-labelledby="subscribe-heading">
+        <h2 id="subscribe-heading">Subscribe to alerts</h2>
+        <p>
+          When the earliest slot changes, an alert is posted to these public
+          channels. There is no signup. Pick one or both.
+        </p>
+        <ul class="subscribe-list">
+          <li>
+            <a href="https://t.me/your_channel" rel="noopener noreferrer"
+              >Telegram channel</a
+            >
+            <span class="hint">Open in the Telegram app.</span>
+          </li>
+          <li>
+            <a href="https://ntfy.sh/your-topic" rel="noopener noreferrer"
+              >ntfy topic</a
+            >
+            <span class="hint"
+              >Install the ntfy app and subscribe to this topic for push
+              notifications.</span
+            >
+          </li>
+        </ul>
+      </section>
+
+      <section class="card" aria-labelledby="disclaimer-heading">
+        <h2 id="disclaimer-heading">What this site does and does not do</h2>
+        <ul class="disclaimer">
+          <li>This is an unofficial alert tool.</li>
+          <li>
+            It does not book, change, cancel, or hold appointments.
+          </li>
+          <li>
+            Users must complete all changes on the official
+            <a
+              href="https://www.service.nsw.gov.au/transaction/view-change-or-cancel-a-driver-or-rider-licence-test"
+              rel="noopener noreferrer"
+              >Service NSW website</a
+            >.
+          </li>
+          <li>
+            No booking number or family name is collected on this site.
+          </li>
+          <li>No email, phone number, or personal identifier is collected.</li>
+          <li>
+            Slot data is provided as-is, may be stale, and may be wrong. Always
+            verify on Service NSW before relying on it.
+          </li>
+        </ul>
+      </section>
+
+      <footer>
+        <p class="footnote">
+          Slot data is refreshed by a scheduled job. GitHub Actions schedules
+          can run late or be paused, so freshness is best-effort.
+        </p>
+      </footer>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

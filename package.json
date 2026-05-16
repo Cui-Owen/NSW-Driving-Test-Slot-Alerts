@@ -1,0 +1,17 @@
+{
+  "name": "nsw-driving-test-slot-alerts",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Zero-backend public alerts for earliest NSW driving test slots.",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "watch:once": "node watch_nsw_slots.js --once",
+    "watch:loop": "node watch_nsw_slots.js",
+    "broadcast:once": "PUBLIC_BROADCAST=1 node watch_nsw_slots.js --once"
+  },
+  "dependencies": {
+    "playwright": "^1.48.0"
+  }
+}
