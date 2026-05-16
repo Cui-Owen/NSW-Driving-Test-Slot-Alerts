@@ -44,6 +44,13 @@
       els.location.textContent = status.location;
     }
 
+    if (status.ok === false) {
+      els.earliest.textContent = "Automated check failed";
+      els.checked.textContent = formatChecked(status.checkedAt);
+      els.message.textContent = status.message || "Automated check failed.";
+      return;
+    }
+
     if (status.earliest && status.earliest.date) {
       var when = status.earliest.date;
       if (status.earliest.time) when += " " + status.earliest.time;

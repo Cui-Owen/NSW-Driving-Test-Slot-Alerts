@@ -169,9 +169,10 @@ async function waitForDojo(page) {
 }
 
 function sanitizeForDebug(value) {
-  return String(value)
-    .replaceAll(bookingNumber, "[BOOKING_NUMBER]")
-    .replaceAll(familyName, "[FAMILY_NAME]");
+  let safe = String(value);
+  if (bookingNumber) safe = safe.replaceAll(bookingNumber, "[BOOKING_NUMBER]");
+  if (familyName) safe = safe.replaceAll(familyName, "[FAMILY_NAME]");
+  return safe;
 }
 
 async function captureDebugPage(page, label, options = {}) {
@@ -248,8 +249,42 @@ function loadPreviousEarliest() {
   const state = readJsonIfExists(statePath);
   if (state && state.earliest !== undefined) return state.earliest;
   const status = readJsonIfExists(statusJsonPath);
-  if (status && status.earliest !== undefined) return status.earliest;
+  if (status && status.ok !== false && status.earliest !== undefined) return status.earliest;
   return undefined;
+}
+
+function publicErrorMessage(error) {
+  const detail = sanitizeForDebug(error && error.message ? error.message : error);
+  if (/Access Denied/i.test(detail)) {
+    return "Automated check failed: Service NSW/myRTA denied access from the GitHub Actions runner.";
+  }
+  return `Automated check failed: ${detail}`;
+}
+
+function writePublicErrorStatus(error) {
+  const checkedAtIso = new Date().toISOString();
+  const message = publicErrorMessage(error);
+  const previousEarliest = loadPreviousEarliest();
+  const statusDoc = {
+    ok: false,
+    location: targetLocation,
+    checkedAt: checkedAtIso,
+    currentBookingDate: null,
+    earliest: null,
+    changed: false,
+    firstRun: previousEarliest === undefined,
+    message,
+    error: sanitizeForDebug(error && error.message ? error.message : error),
+  };
+  const stateDoc = {
+    location: targetLocation,
+    checkedAt: checkedAtIso,
+    lastError: message,
+  };
+  if (previousEarliest !== undefined) stateDoc.earliest = previousEarliest;
+
+  writeJsonAtomic(statusJsonPath, statusDoc);
+  writeJsonAtomic(statePath, stateDoc);
 }
 
 async function checkOnce() {
@@ -278,6 +313,10 @@ async function checkOnce() {
       await waitForDojo(page);
     } catch (error) {
       await captureDebugPage(page, "manage-before-booking-form", { screenshot: true });
+      const bodyText = await page.locator("body").innerText().catch(() => "");
+      if (/Access Denied/i.test(bodyText) && /errors\.edgesuite\.net|permission/i.test(bodyText)) {
+        throw new Error("myRTA returned Access Denied before the booking form loaded");
+      }
       throw error;
     }
     await setBookingFields(page);
@@ -486,5 +525,9 @@ async function main() {
 
 main().catch((error) => {
   console.error(error.stack || error);
+  if (publicBroadcast) {
+    writePublicErrorStatus(error);
+    return;
+  }
   process.exitCode = 1;
 });
