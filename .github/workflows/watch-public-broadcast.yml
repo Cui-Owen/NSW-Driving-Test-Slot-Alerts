@@ -33,6 +33,7 @@ jobs:
       TARGET_LOCATION: Botany
       STATUS_JSON_PATH: docs/status.json
       STATE_PATH: state/public_broadcast_state.json
+      DEBUG_ARTIFACTS_PATH: artifacts/debug
       # Do not echo secrets in step output.
       ACTIONS_STEP_DEBUG: "false"
 
@@ -75,6 +76,15 @@ jobs:
 
       - name: Run public broadcast watcher (single check)
         run: node watch_nsw_slots.js --once
+
+      - name: Upload debug artifacts if watcher fails
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: watcher-debug
+          path: artifacts/debug/
+          if-no-files-found: ignore
+          retention-days: 3
 
       - name: Commit updated status.json if changed
         run: |

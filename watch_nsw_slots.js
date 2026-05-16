@@ -27,6 +27,7 @@ const targetLocation = process.env.TARGET_LOCATION || "Botany";
 const statusJsonPath = process.env.STATUS_JSON_PATH || "docs/status.json";
 const statePath = process.env.STATE_PATH || "state/public_broadcast_state.json";
 const chromePath = process.env.CHROME_PATH || DEFAULT_CHROME_PATH;
+const debugArtifactsPath = process.env.DEBUG_ARTIFACTS_PATH || "artifacts/debug";
 
 function parseCurrentBookingDate(text) {
   const match = text.match(/Date of test:\s*([A-Za-z]+,\s+\d{1,2}\s+[A-Za-z]+\s+\d{4})/);
@@ -163,8 +164,44 @@ async function waitForDojo(page) {
       dijit.byId("widget_input_familyName") &&
       dijit.byId("submitNoLogin"),
     null,
-    { timeout: 30000 }
+    { timeout: 60000 }
   );
+}
+
+function sanitizeForDebug(value) {
+  return String(value)
+    .replaceAll(bookingNumber, "[BOOKING_NUMBER]")
+    .replaceAll(familyName, "[FAMILY_NAME]");
+}
+
+async function captureDebugPage(page, label, options = {}) {
+  const dir = debugArtifactsPath;
+  if (!dir) return;
+  fs.mkdirSync(dir, { recursive: true });
+
+  const safeLabel = label.replace(/[^a-z0-9_-]+/gi, "-").replace(/^-|-$/g, "");
+  const prefix = path.join(dir, safeLabel || "page");
+  const meta = {
+    label,
+    url: page.url(),
+    title: await page.title().catch(() => ""),
+    capturedAt: new Date().toISOString(),
+  };
+
+  fs.writeFileSync(`${prefix}.json`, JSON.stringify(meta, null, 2) + "\n", "utf8");
+  fs.writeFileSync(
+    `${prefix}.html`,
+    sanitizeForDebug(await page.content().catch((error) => String(error))),
+    "utf8"
+  );
+  fs.writeFileSync(
+    `${prefix}.txt`,
+    sanitizeForDebug(await page.locator("body").innerText().catch((error) => String(error))),
+    "utf8"
+  );
+  if (options.screenshot) {
+    await page.screenshot({ path: `${prefix}.png`, fullPage: true }).catch(() => {});
+  }
 }
 
 async function setBookingFields(page) {
@@ -235,7 +272,14 @@ async function checkOnce() {
     if (!manageHref) throw new Error("Could not find Manage booking link");
 
     await page.goto(manageHref, { waitUntil: "domcontentloaded", timeout: 60000 });
-    await waitForDojo(page);
+    await page.waitForLoadState("load", { timeout: 60000 }).catch(() => {});
+    await page.waitForLoadState("networkidle", { timeout: 15000 }).catch(() => {});
+    try {
+      await waitForDojo(page);
+    } catch (error) {
+      await captureDebugPage(page, "manage-before-booking-form", { screenshot: true });
+      throw error;
+    }
     await setBookingFields(page);
     await Promise.all([
       page.waitForNavigation({ waitUntil: "domcontentloaded", timeout: 60000 }),
