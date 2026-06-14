@@ -1,11 +1,11 @@
 {
   "ok": false,
   "location": "Botany",
-  "checkedAt": "2026-06-13T22:47:48.450Z",
+  "checkedAt": "2026-06-14T01:39:12.779Z",
   "currentBookingDate": null,
   "earliest": null,
   "changed": false,
   "firstRun": true,
-  "message": "Automated check failed: Could not find Manage booking link",
-  "error": "Could not find Manage booking link"
+  "message": "Automated check failed: Service NSW/myRTA denied access from the GitHub Actions runner.",
+  "error": "myRTA returned Access Denied before the booking form loaded"
 }
