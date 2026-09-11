@@ -1,11 +1,11 @@
 {
   "ok": false,
   "location": "Botany",
-  "checkedAt": "2026-09-11T14:29:49.637Z",
+  "checkedAt": "2026-09-11T17:58:17.695Z",
   "currentBookingDate": null,
   "earliest": null,
   "changed": false,
   "firstRun": true,
-  "message": "Automated check failed: Service NSW/myRTA denied access from the GitHub Actions runner.",
-  "error": "myRTA returned Access Denied before the booking form loaded"
+  "message": "Automated check failed: page.waitForFunction: Timeout 60000ms exceeded.",
+  "error": "page.waitForFunction: Timeout 60000ms exceeded."
 }
